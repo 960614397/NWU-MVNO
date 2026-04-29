@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NWU Connected Campus · MVNO Workshop 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #6929c4;
+  --purple-dark: #491d8b;
+  --purple-light: #f6f2ff;
+  --purple-mid: #d4bbff;
+  --navy: #0d1b2a;
+  --navy-mid: #162033;
+  --slate: #1e2d3d;
+  --text: #0d1b2a;
+  --text-muted: #5a6a7a;
+  --text-faint: #8a9aaa;
+  --border: rgba(13,27,42,0.10);
+  --border-strong: rgba(13,27,42,0.18);
+  --bg: #ffffff;
+  --bg2: #f7f8fa;
+  --bg3: #f0f2f5;
+  --surface: #ffffff;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+}
+*,::before,::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);color:var(--text);background:var(--bg);overflow-x:hidden;font-size:16px;line-height:1.6}
+
+/* ── LOCK SCREEN ── */
+#lockscreen{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:2rem}
+.lock-logo{display:flex;align-items:center;gap:14px;margin-bottom:2.5rem}
+.lock-logo img{height:44px;background:#fff;border-radius:8px;padding:6px 10px}
+.lock-badge{background:rgba(105,41,196,0.25);border:1px solid rgba(105,41,196,0.5);color:#d4bbff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;font-family:var(--font-sans)}
+.lock-card{background:rgb(26,40,64);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:420px;box-shadow:0 40px 80px rgba(0,0,0,0.5)}
+.lock-icon{width:60px;height:60px;background:rgba(105,41,196,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:24px}
+.lock-card h2{font-family:var(--font-serif);font-size:1.6rem;color:#fff;text-align:center;margin-bottom:.5rem}
+.lock-card p{font-size:13.5px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:1.75rem;line-height:1.6}
+.lock-input{width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;padding:.85rem 1rem;color:#fff;font-size:14px;font-family:var(--font-sans);margin-bottom:1rem;transition:border-color .2s}
+.lock-input::placeholder{color:rgba(255,255,255,0.3)}
+.lock-input:focus{outline:none;border-color:var(--purple)}
+.lock-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:10px;padding:.9rem;font-size:15px;font-weight:600;font-family:var(--font-sans);cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.lock-btn:hover{background:var(--purple-dark)}
+.lock-error{color:#ff6b6b;font-size:12.5px;text-align:center;margin-top:.75rem;display:none}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px}
+.nav-brand{display:flex;align-items:center;gap:12px}
+.nav-brand img{height:32px;background:transparent}
+.nav-badge{background:var(--purple-light);color:var(--purple);border:1px solid var(--purple-mid);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px}
+.nav-links{display:flex;align-items:center;gap:1.75rem}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--text-muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--purple)}
+.nav-cta{background:var(--purple);color:#fff;padding:.5rem 1.25rem;border-radius:8px;font-size:13.5px;font-weight:600;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--purple-dark);color:#fff}
+
+/* ── SHARED LAYOUT ── */
+section{padding:5rem 0}
+.container{max-width:1200px;margin:0 auto;padding:0 2.5rem}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:.75rem}
+.section-title{font-family:var(--font-serif);font-size:2.4rem;color:var(--text);line-height:1.2;margin-bottom:1rem}
+.section-sub{font-size:1rem;color:var(--text-muted);max-width:600px;line-height:1.7}
+.blockquote{border-left:3px solid var(--purple);padding-left:1.25rem;font-family:var(--font-serif);font-style:italic;font-size:1.15rem;color:var(--text);margin:1.5rem 0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:var(--purple-mid);box-shadow:0 4px 24px rgba(105,41,196,0.08)}
+.card-num{font-family:var(--font-serif);font-size:2.25rem;color:var(--purple);font-weight:400;margin-bottom:.25rem}
+.card-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.card-sub{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin-bottom:.6rem}
+.card-text{font-size:13.5px;color:var(--text-muted);line-height:1.65}
+.tag{display:inline-block;font-size:11px;background:var(--bg3);color:var(--text-muted);border:1px solid var(--border);padding:3px 10px;border-radius:20px;margin-right:5px;margin-bottom:5px}
+.tag-purple{background:var(--purple-light);color:var(--purple);border-color:var(--purple-mid)}
+.divider{height:1px;background:var(--border);margin:2rem 0}
+
+/* ── HERO ── */
+#hero{background:var(--navy);padding:0;min-height:92vh;display:flex;flex-direction:column}
+.hero-inner{flex:1;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:3rem;padding:5rem 2.5rem;max-width:1200px;margin:0 auto;width:100%}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(105,41,196,0.15);border:1px solid rgba(105,41,196,0.35);border-radius:30px;padding:.4rem 1rem;font-size:12px;font-weight:600;color:#d4bbff;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1.75rem}
+.hero-pill span{width:6px;height:6px;background:var(--purple-mid);border-radius:50%;display:inline-block}
+.hero-title{font-family:var(--font-serif);font-size:3.4rem;color:#fff;line-height:1.1;margin-bottom:1.5rem}
+.hero-title em{color:var(--purple-mid);font-style:italic}
+.hero-desc{font-size:1rem;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:2.5rem;max-width:480px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:2.5rem}
+.hero-stat{background:rgba(255,255,255,0.04);padding:1.1rem 1.25rem;border-radius:12px;border:1px solid rgba(255,255,255,0.06)}
+.hero-stat .num{font-size:1.8rem;font-weight:700;color:#fff;line-height:1;font-family:var(--font-serif)}
+.hero-stat .num em{color:var(--purple-mid);font-style:normal}
+.hero-stat .lbl{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:4px;line-height:1.4}
+.phone-frame{background:rgb(26,37,53);border:2px solid rgba(255,255,255,0.1);border-radius:36px;padding:12px;box-shadow:0 40px 80px rgba(0,0,0,0.5);max-width:280px;margin:0 auto}
+.phone-screen{background:var(--navy);border-radius:26px;overflow:hidden;font-size:12px}
+.phone-sb{background:var(--purple);padding:10px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.phone-sb .time{color:#fff;font-size:11px;font-weight:600}
+.phone-sb .icons{color:rgba(255,255,255,0.8);font-size:10px;display:flex;gap:4px}
+.phone-body{padding:14px}
+.phone-welcome{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:2px}
+.phone-brand{font-size:15px;font-weight:700;color:#fff;letter-spacing:.3px;margin-bottom:14px}
+.phone-card{background:rgb(26,40,64);border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.07)}
+.phone-card-label{font-size:9.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px}
+.phone-card-val{font-size:20px;font-weight:700;color:#fff;font-family:var(--font-serif)}
+.phone-card-sub{font-size:9.5px;color:rgba(255,255,255,0.35);margin-top:2px}
+.phone-reward{background:rgba(105,41,196,0.2);border:1px solid rgba(105,41,196,0.3);border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
+.phone-reward-label{font-size:9px;color:#d4bbff;text-transform:uppercase;letter-spacing:.5px}
+.phone-reward-val{font-size:13px;font-weight:700;color:#d4bbff}
+.hero-cta-row{display:flex;align-items:center;gap:1rem}
+.btn-primary{background:var(--purple);color:#fff;padding:.75rem 1.75rem;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:background .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:var(--purple-dark)}
+.btn-ghost{color:rgba(255,255,255,0.6);font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .2s}
+.btn-ghost:hover{color:#fff}
+
+/* ── MARQUEE ── */
+.marquee-bar{background:var(--navy-mid);border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);padding:.85rem 0;overflow:hidden}
+.marquee-track{display:flex;gap:3rem;white-space:nowrap;animation:marquee 30s linear infinite}
+.marquee-item{font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.marquee-dot{width:4px;height:4px;background:var(--purple);border-radius:50%;flex-shrink:0}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── DSG / INTRO ── */
+#dsg{background:var(--bg);border-bottom:1px solid var(--border)}
+.dsg-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:4rem;align-items:center}
+.timeline{position:relative;padding-left:2rem;margin-top:2rem}
+.timeline::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:1px;background:var(--border-strong)}
+.tl-item{position:relative;margin-bottom:1.5rem;padding-left:.75rem}
+.tl-item::before{content:'';position:absolute;left:-1.65rem;top:6px;width:8px;height:8px;background:var(--purple);border-radius:50%}
+.tl-year{font-size:11px;font-weight:700;color:var(--purple);letter-spacing:.5px;margin-bottom:2px}
+.tl-text{font-size:13.5px;color:var(--text-muted);line-height:1.5}
+.stat-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:2rem}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.stat-box .n{font-family:var(--font-serif);font-size:2rem;color:var(--purple)}
+.stat-box .l{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+/* ── WHY MVNOs ── */
+#why{background:var(--navy);color:#fff}
+#why .section-label{color:var(--purple-mid)}
+#why .section-title{color:#fff}
+#why .section-sub{color:rgba(255,255,255,0.5)}
+.why-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2.5rem}
+.why-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:1.5rem 1.25rem;transition:border-color .2s,background .2s}
+.why-card:hover{background:rgba(105,41,196,0.1);border-color:rgba(105,41,196,0.35)}
+.why-card-icon{width:38px;height:38px;background:rgba(105,41,196,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:1rem}
+.why-card h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.5px}
+.why-card p{font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.6}
+.fallacy-box{background:rgba(105,41,196,0.08);border:1px solid rgba(105,41,196,0.2);border-radius:16px;padding:2rem;margin-top:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.fallacy-no{display:flex;flex-direction:column;gap:.75rem}
+.fallacy-no-item{display:flex;align-items:center;gap:.75rem;font-size:13.5px;color:rgba(255,255,255,0.55)}
+.cross{color:#ff6b6b;font-size:18px;flex-shrink:0}
+.check{color:#6ee7b7;font-size:18px;flex-shrink:0}
+.fallacy-yes{background:rgba(255,255,255,0.04);border-radius:12px;padding:1.5rem}
+.fallacy-yes h3{font-family:var(--font-serif);font-size:1.6rem;color:#fff;margin-bottom:.75rem}
+.fallacy-yes p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7}
+
+/* ── QUOTE BAR ── */
+.quote-bar{background:var(--navy-mid);padding:2rem 0;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)}
+.quote-bar blockquote{max-width:1200px;margin:0 auto;padding:0 2.5rem;font-family:var(--font-serif);font-style:italic;font-size:1.2rem;color:#fff;border-left:3px solid var(--purple)}
+.quote-bar cite{display:block;font-style:normal;font-size:12px;color:rgba(255,255,255,0.35);margin-top:.5rem;font-family:var(--font-sans);letter-spacing:.5px}
+
+/* ── CVP ── */
+#cvp{background:var(--bg)}
+.cvp-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:4rem;align-items:start;margin-top:2.5rem}
+.cvp-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.cvp-table th{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);padding:.6rem 1rem;border-bottom:1px solid var(--border);text-align:left}
+.cvp-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}
+.cvp-table td:first-child{font-weight:600;color:var(--text);font-size:12.5px}
+.cvp-table td:last-child{color:var(--text-muted);font-size:12.5px}
+.cvp-dark{background:var(--navy);border-radius:16px;padding:1.75rem;margin-bottom:1.5rem}
+.cvp-dark p{font-family:var(--font-serif);font-style:italic;font-size:1.05rem;color:#fff;line-height:1.6}
+.platform-pillars{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1.5rem}
+.pillar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem}
+.pillar-icon{font-size:20px;margin-bottom:.4rem}
+.pillar h4{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:.25rem}
+.pillar p{font-size:11.5px;color:var(--text-muted);line-height:1.5}
+
+/* ── VAS ── */
+#vas{background:var(--bg2)}
+.vas-header{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;margin-bottom:2.5rem}
+.vas-stat-big{text-align:right;flex-shrink:0}
+.vas-stat-big .n{font-family:var(--font-serif);font-size:3rem;color:var(--purple);line-height:1}
+.vas-stat-big .l{font-size:12px;color:var(--text-muted);margin-top:4px}
+.vas-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:2rem}
+.vas-table-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.vas-row-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;align-items:flex-start;gap:.75rem}
+.vas-row-icon{font-size:22px;flex-shrink:0}
+.vas-row-item h4{font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:.25rem}
+.vas-row-item p{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+.global-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.global-card{background:var(--navy);color:#fff;border-radius:14px;padding:1.5rem}
+.global-card h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:.5rem}
+.global-card p{font-size:12.5px;color:rgba(255,255,255,0.45);line-height:1.6}
+
+/* ── USE CASES ── */
+#usecases{background:var(--bg)}
+.usecase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2rem}
+.uc-card{border:1px solid var(--border);border-radius:14px;padding:1.5rem;background:var(--surface);transition:all .2s}
+.uc-card:hover{border-color:var(--purple-mid);box-shadow:0 4px 20px rgba(105,41,196,0.1)}
+.uc-icon{width:42px;height:42px;border-radius:10px;background:var(--purple-light);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:1rem}
+.uc-card h3{font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.uc-card .uc-type{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--purple);margin-bottom:.75rem}
+.uc-card p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:1rem}
+.uc-outcomes{display:flex;flex-direction:column;gap:.35rem}
+.uc-outcomes li{font-size:12px;color:var(--text-muted);list-style:none;display:flex;align-items:center;gap:.5rem}
+.uc-outcomes li::before{content:'→';color:var(--purple);font-size:11px;flex-shrink:0}
+
+/* ── PACKAGE TABLE ── */
+.pkg-table-wrap{margin-top:2rem;overflow-x:auto}
+.pkg-table{width:100%;border-collapse:collapse;font-size:13.5px}
+.pkg-table th{background:var(--navy);color:#fff;padding:.9rem 1.25rem;text-align:left;font-weight:600;font-size:12px;letter-spacing:.3px}
+.pkg-table th:first-child{border-radius:10px 0 0 0}
+.pkg-table th:last-child{border-radius:0 10px 0 0}
+.pkg-table td{padding:.85rem 1.25rem;border-bottom:1px solid var(--border);vertical-align:middle}
+.pkg-table tr:hover td{background:var(--bg2)}
+.pkg-table td:nth-child(2){color:var(--purple);font-weight:600}
+
+/* ── EVP ── */
+#evp{background:var(--navy)}
+#evp .section-label{color:var(--purple-mid)}
+#evp .section-title{color:#fff}
+#evp .section-sub{color:rgba(255,255,255,0.45)}
+.evp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem}
+.evp-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.75rem;transition:all .2s}
+.evp-card:hover{background:rgba(105,41,196,0.1);border-color:rgba(105,41,196,0.3)}
+.evp-num{font-family:var(--font-serif);font-size:2.5rem;color:rgba(105,41,196,0.4);line-height:1;margin-bottom:.75rem}
+.evp-card h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.3px}
+.evp-tagline{font-size:12.5px;font-style:italic;color:var(--purple-mid);margin-bottom:.75rem}
+.evp-card ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.evp-card li{font-size:12.5px;color:rgba(255,255,255,0.5);display:flex;align-items:flex-start;gap:.5rem;line-height:1.5}
+.evp-card li::before{content:'·';color:var(--purple-mid);flex-shrink:0;font-size:16px;line-height:1.2}
+.evp-employer{margin-top:2.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.evp-employer-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:1.5rem}
+.evp-employer-card h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--purple-mid);margin-bottom:1rem}
+.evp-employer-card ul{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.evp-employer-card li{font-size:12.5px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:.5rem}
+.evp-employer-card li::before{content:'✓';color:var(--purple-mid);font-size:11px;flex-shrink:0}
+
+/* ── CX ── */
+#cx{background:var(--bg2)}
+.cx-five{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2rem}
+.cx-step{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center;position:relative}
+.cx-step-num{width:32px;height:32px;border-radius:50%;background:var(--purple);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.cx-step h4{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.cx-step p{font-size:11.5px;color:var(--text-muted);line-height:1.5}
+.cx-channels{margin-top:2rem;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.75rem}
+.cx-channels h3{font-size:14px;font-weight:600;color:var(--text);margin-bottom:1rem}
+.channel-tags{display:flex;flex-wrap:wrap;gap:.5rem}
+
+/* ── MODELS ── */
+#models{background:var(--bg)}
+.models-table-wrap{margin-top:2rem;overflow-x:auto}
+.models-table{width:100%;border-collapse:collapse;font-size:13px}
+.models-table th{padding:1rem 1.25rem;text-align:center;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border)}
+.models-table th:first-child{text-align:left}
+.models-table th:nth-child(3){background:var(--purple);color:#fff;border-radius:8px 8px 0 0}
+.models-table td{padding:.85rem 1.25rem;border-bottom:1px solid var(--border);text-align:center;color:var(--text-muted)}
+.models-table td:first-child{text-align:left;font-weight:500;color:var(--text);font-size:12.5px}
+.models-table td:nth-child(3){background:var(--purple-light);font-weight:600;color:var(--purple)}
+.models-table .yes{color:#059669;font-weight:600}
+.models-table .opt{color:var(--text-faint)}
+
+/* ── METHODOLOGY ── */
+#methodology{background:var(--bg2)}
+.timeline-h{display:flex;align-items:flex-start;gap:0;margin-top:2.5rem;position:relative}
+.timeline-h::before{content:'';position:absolute;top:20px;left:0;right:0;height:2px;background:var(--border-strong)}
+.phase{flex:1;position:relative;padding-top:3rem;padding-right:1rem}
+.phase-dot{width:14px;height:14px;border-radius:50%;background:var(--purple);position:absolute;top:14px;left:0;border:3px solid #fff;box-shadow:0 0 0 2px var(--purple)}
+.phase-gate{position:absolute;top:4px;left:-6px;background:var(--purple-light);border:1px solid var(--purple-mid);border-radius:4px;font-size:9px;font-weight:700;color:var(--purple);padding:2px 6px;white-space:nowrap;letter-spacing:.3px}
+.phase-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-faint);margin-bottom:.3rem}
+.phase-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.3}
+.deliverables-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:2.5rem}
+.del-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem}
+.del-code{display:inline-block;background:var(--purple);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:.6rem;letter-spacing:.5px}
+.del-card h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.del-card p{font-size:12px;color:var(--text-muted);line-height:1.5}
+
+/* ── CVM XANITE ── */
+#cvm{background:var(--navy)}
+#cvm .section-label{color:var(--purple-mid)}
+#cvm .section-title{color:#fff}
+#cvm .section-sub{color:rgba(255,255,255,0.45)}
+.xanite-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:2.5rem}
+.xanite-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.75rem}
+.xanite-card h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid rgba(255,255,255,0.08)}
+.xanite-card ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.xanite-card li{font-size:12.5px;color:rgba(255,255,255,0.5);display:flex;align-items:flex-start;gap:.5rem;line-height:1.5}
+.xanite-card li::before{content:'→';color:var(--purple-mid);font-size:11px;flex-shrink:0;margin-top:2px}
+.roadmap{display:flex;gap:1.5rem;margin-top:2rem;position:relative}
+.roadmap::before{content:'';position:absolute;top:20px;left:0;right:0;height:2px;background:rgba(255,255,255,0.08)}
+.rm-item{flex:1;position:relative;padding-top:2.5rem}
+.rm-dot{width:12px;height:12px;border-radius:50%;background:var(--purple);position:absolute;top:15px;left:0;border:2px solid var(--navy)}
+.rm-item h4{font-size:13px;font-weight:600;color:#fff;margin-bottom:.4rem}
+.rm-item p{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.6}
+
+/* ── FOOTER ── */
+footer{background:var(--navy);padding:3rem 0;border-top:1px solid rgba(255,255,255,0.06)}
+.footer-inner{max-width:1200px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:center}
+.footer-brand img{height:36px;background:#fff;border-radius:6px;padding:4px 8px}
+.footer-meta{text-align:right}
+.footer-meta p{font-size:12.5px;color:rgba(255,255,255,0.3);line-height:1.7}
+.footer-meta a{color:rgba(255,255,255,0.5);text-decoration:none}
+.footer-meta a:hover{color:#fff}
+
+/* ── ANIMATIONS ── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.fade-up.visible{opacity:1;transform:none}
+.stagger-1{transition-delay:.1s}.stagger-2{transition-delay:.2s}.stagger-3{transition-delay:.3s}.stagger-4{transition-delay:.4s}.stagger-5{transition-delay:.5s}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LOCK SCREEN ═══════════ -->
+<div id="lockscreen">
+  <div class="lock-logo">
+    <img src="data:image/jpeg;base64,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" alt="NWU Logo">
+    <span class="lock-badge">MVNO 2026</span>
+  </div>
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <h2>Access Document</h2>
+    <p>This document is confidential and for authorised NWU recipients only. Enter your access credentials to continue.</p>
+    <input class="lock-input" id="lock-user" type="text" placeholder="Username" autocomplete="off">
+    <input class="lock-input" id="lock-pass" type="password" placeholder="Password" autocomplete="off">
+    <button class="lock-btn" onclick="checkLock()">Access Document →</button>
+    <div class="lock-error" id="lock-error">Incorrect credentials. Please try again.</div>
+  </div>
+</div>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav id="main-nav" style="display:none">
+  <div class="nav-brand">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADhAOEDASIAAhEBAxEB/8QAHAABAQEBAAMBAQAAAAAAAAAAAAgHBgMEBQkC/8QARxAAAQMDAgMEBAgKCQUAAAAAAAECAwQFEQYHCBIhEzFBURQiYYE3OHFyc3SysxUWIzI1YnV2kcE0QlKCg5KisbQzNkZTof/EABoBAQADAQEBAAAAAAAAAAAAAAADBAUCAQb/xAAwEQACAgECBAEMAgMAAAAAAAAAAQIDBBExBRIhQVETFDIzYXGRobHB0fCB8SI0Uv/aAAwDAQACEQMRAD8AssAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHbr7h2Xbuwsr7kj6mrqFVlFRRORHzvROvVfzWJlOZ3hlOiqqIss6q3y3GvtU98N5SzUyqvJTW+NGIieGXuRXquPFFRF8kPLxSXapuW891pJnqsNsigpadueiNWJsrlx5q6VevkieR5Ni9oZdxYqu511xlt1npZuwV0LEdNNJyo5Wt5ujURHNXmVF78Y78b2Pj00Uq2xb9fiblFFNFKss7/AHPkWPeLcq0VDZYdVVVWxFy6Gua2dj/YquTmRPmuRfaUpsjvBbtwWPttZTstt+gj5306P5o52J0V8Sr16ZTLV6pnvVOpkm8OwMelNL1Go9NXesr6eib2lXTVqMWRI/GRj2Nanq96tVvdlUXKYXJNBXSpsuuLFdqSRWTU1fC5FTxarka9vyOarmr7FU7nTRl1OVe/w+J1OmjKrcq9/gfoOAD54wQfNiv1ll1DNp6O6UjrvDEk0lEkqds2Ncesre/HrJ19qH0iP+IS9XPTvENUXuz1K09dRx00kT8ZRfySIrXJ4tVFVFTxRVLOLj+Xm469ixjUeXk469iwAcxtjrS2a80lT323KjHr+TqqdXZdTzIiczF/iiovi1UXxOnIJRcG4y3RDKLi3F7nOprnR66g/F9NS2xbt23Yeh+kN7XtP7PL359h5tS6w0tpqohp9QX632yWdivibUzIxXtRcKqZ7yWYfjcr+8bv5mo8Y2nkr9BUOoYmIs1oq0bI7HVIZsMcn+dIv4KXniQjbCDfSSLrxYKyEG/SRtNtrqO5W+nuFvqYqqkqI0khmicjmSMVMo5FTvRT2DHOEW/rdNr3WmV6uns9XJAnMuVWJ/5Ri/J6zmp8w2GV7Io3SyPaxjEVznKuERE71UqXVuqxw8CpdX5Oxw8D0qe9WiovdTY4LlSyXOkjbJUUjZEWWJrscqub3oi5T+J75G+2Gv3y8R7dUzyK2mv9bJRv5kwqQzKjYGr8isgRfmqWQS5WM8eST7r+yXJx3Q0n3R6F+vNpsFtfcr1caa30bHNa6eokRjEVVwiZXzU8GmtSWDUtPNUafu9Hc4YX9nI+mlR7WOxnCqnjhUX3mEcad/RtLYNLRP6ySPuFQiOwqI1Fjjyniiq6RflYhonDTp78X9obV2jEbU3NFuM/TCr2uFZn2pGkae49ljxjjq1vq2eyoUaFY31Z0tm15oy83ZlotWp7XW171cjaeGoa6RVaiq7onkiLn5DpCMOHL4wFt+krfuZSzzzMx1RNRT7anmVQqZqKfY/mWRkUT5ZHI1jGq5zl7kRO9T4GndcaP1HXrQWHUlsuVUkayrFTVDXu5EVEV2E8MuTr7UPq339CV/1aT7Kkj8G/wsr+wp/vac9ox1ZVObfontGOrK5zb2LEAMX3M1FVvqkrq64spbG69OstLTvv8lmgV8cEsktRUVUbHSJ68TomRtVGr0Vcq5EbXrg5vREEIOb0RtAMn23vVZTLp6shqq+axagq6m3tpayvdX+i1MSTPbNBVP8AyktPI2nkwr855olbyorkXWBODg9BODg9AADg4PQ1HNLT6euVRC9WSxUkr2OTva5GKqKQ6u7m5nonP+Olz5uzznEffj5pcGqUzpi6p50Uyf6FPzoX+gr9H/I2eFVwmpcyT2NfhcIyUuZa7Hfb8vfJu/f5JHK57/RHOcviq0cGVPs2vVOotL7H2ibT13qLbJUX+rZM6Hly9qQxKiLlF8T4m+3wt335tH/woD+rp8BVh/eGs+5iL/KpVVprw+he0TrrT9n0Og0brvWOpLZrS2X7UNZcaNNIXKZIpeXCPa1iI7oieDl/iZnZP05b/rcX20Oo2o/81/cu6fZjOXsn6ct/1uL7aEsYxi5KK0JIxjHmUVoajutuXr+1blait1v1XX01JT18kcMTOTlY1F6ImWlB8Ot6uuoNo7Vdr1XS11dLLVNknkxzORtRI1ucIidGtRPcShvZ8Lmqf2jIU/wqfAbZfp6z/lSmZnVwjixaS16fRmdmVwWNFpden0ZqRHPEfDHUcQUtPM3mildRRvbnGWuaxFTPh0UsYj3iG+MV/i0H+zCtwz1r9zK3DvWv3M9qlnvHD9u++nndPU6buHV2G59Ips9Hp4LNEq4VPHK9ER7VSsLbW0lyt9PcKCojqaSpibLDNG7LZGOTKORfJUU5XeDQdFuBo+a0TOZBXRL21BVKmexmROmfNjvzXJ5L06oipiXDdr6t0jqSbbPWCvpI1qXQ0aTL/RalXdYVXu5HquWr3cy9Mo9Me2Lzuryi9OO/tXj+/g9mvOq/KL0lv7V4/v4Och+Nyv7xu/mVZrKyQak0ndbBULyx19JJT8/ixXNVEcntRcL7iU4fjcr+8bv5lhDPbTra/wCUM1tOtrwRJHCPeZ7JuhXacrm+juudM+F8Tl6pU06q5G+5qz/wNw4ktRfi7tFdnRyIypuKJboPWwqrLlH4XzSNJHJ80wLeWF+3XES3UFOxzKZ9VDeWIxv5zXOxO32q5zZfc9DoeL+/S3nVWntI2p3pCxwpUIxipyyzzu5Im580RF90pZspV2RXYtmtX/H6kWZ1K6+Fi2a1+H6kY7cdNXS26MsmrUc6OmulRURUz2IqLE6FyIi581VHqn0aqXRt9f49U6Is+oGcqLXUjJZGoueSTGHt9zkcnuOD3b2/gk4fV01Qx9tPYKOKopHI3Lnvgb66p+s9naJ8rzheG7X0dm2c1ZDUOR79OtfW00a9OZkrXK1iearK1/8AnQjyJed088d0/k9vsR3y86p5lun8nt9jg90XybkcRM9opnufDLcI7RE5vRWQxLyzORfHC9s/5CzIYo4YWQxMRkcbUaxqJ0RETCISfwe2CS6bgV+o6vMyWqlVEkemVdUTqqc2fPkbLn56e+syHiMlGUaltFEXEJJSjUtoojDhy+MBbfpK37mUs8jDhy+MBbfpK37mUs894p61e5fccS9avd+T077+hK/6tJ9lSR+Df4WV/YU/3tOVxff0JX/VpPsqSPwb/Cyv7Cn+9pz3D/17fd+T3E9Rb7vyWIZzqTSV5ptVQ3i00lPebYlxdc32yaqSB0NS6mkpnuY5zHNfG9kiuWNeTD05kcvMrTRgZ0ZOOxQjJx2M90PpO9xV1vqL52dHbLO+Z9ntbar0p8DpEc1HPl5GJiON74o40R3K1y5e/wBXl0IASk5PViUnJ6sAA5OT52p/+2rp9Tm+wp+dKoq0WE7+z/kfpHVwR1VLLTTJmOVisenmiphT899XaduGktSVunLmxzaiikWNHq3CSs/qSN/VcmFT5cd6KhtcIklzLv0NjhUl/ku/QoHWew9x1tqSfVlBqegp6W5w00sUbqZz1RG08TM8yORFzyZ95xu9Ohqrb7bDT1irLjDXyPvFTUJLFGrERHRMTGFVf7P/ANOe0LvPrvR1ljs1uq6GsoYU5YIrhA6XsG/2WOa5q8vkiqqJ3JhOh7V31VfdztG3SjvFX6ZfrZW/hakjbGje1pOz7OeGJqf+vDJcdXKnP3qiliFeRCS55JxX9InjXfCS55JxX9I8HD7aV1Bqy+aeZVR0st101XUUUr0yjXSdmmceOEyuPYd/b+GW901wpql2rbc5IZmSK1KN6KqNci4/O9hgdouNdablTXW1VktJW0z0kgqIlw5jsd6eC9FVFRcoqKqLlFVDTLjxA7lVtpdb0rLZSuczlWrpqNW1Cp4rlXK1FXzRqY8MEmRXkOetUkk9yS+F7lrU1ozlt5Zop92NUyQva9n4TmblF6Za7lVPcqKnuKj4VPgNsv09Z/ypSM42T1NSyKJktRUTyIxjGor5JXuXCIid7nKq/KqqXls/piXR221l09U8vpVPCr6nldlEmke6SREXxRHPVEXyRCtxPSFEYe1fJFfiOkKIw9q+SOsI94hvjFf4tB/swsIl3fDROr7tvn+F7Zpy41dv7SjX0mKLLMNRnN19mFKPDpKNrbenRlLAko2PV9iojCOKjbRb3a3a2slOrrnQRYroo09app2/10Txezv81blOqtahu4KtF0qZqcStTbKmanEhfaSvq7pvdpy419Q6pqqi5sfLM7HNI7C9Vx3r7S6CcL3tVU6V3/03fNP26eXT9bcUme2CJXNoJOqua7CerGuctXuTq3phuaPLfELIWOEobaFrPsjY4yjtoYHxm6e9L0padTRR5fbqlaed3lFNhEVfPEjWInz1Mw4c7VVaw3lt9wuTn1Mdopm1Ur3pnPYxshgaq+aKjFTxXs1Ks3F0+zVWhbzp53Kjq2kfHE5yZRkuMxu9z0avuMy4RtI1tg0fcbzd7dU0FwulSjUhqYXRyshiRUajmuRFT13SL7UwpLTkqOJKPddF/P6ySnJUcWS7rp8f1m2ORHIrXIiovRUXxIJ3GtFVonW2pdK073w0T5UjSNE9WSmV7J4U9vLiPr5tVPNC9ieuKnby5ai1Lpu7WOjnlnrXttVXJDC6TsUV+YpXoncxvNJzOXCJ6uVI+G3Ku3lls/sR8OtULOWWz+x1vCpp78C7TUtbKzlqLxM+ufnr6i4ZHj2KxjXf3lNYPXtdFTW220tuo40ipqWFkELE7msa1GtT+CIewUrrHZY5vuVLbPKTcvEiPam4QaS4gKKS6ytp4Ka6VVFUvf0RiuSWFFVfBEercqvREypbhPvEDshX6gvM+q9HthlrahEWut8j0Z2zkTCSRuX1UcqIiK1VRF785znPbLq7fjRtOlnbbtQyU9O1GRR1dnfUNjRPBkqMVXJ4InMqJjCYNS6uOaozrktdOqZpXVxy1GcJLXTqmVHuVfKPTmg71eK6RrIoKOTlRVRFkkVqtYxM+LnKjU9qkzcGlDO/c6tq2NVYKWzSRyP8nPli5U96Mev91T5tdZd7d1a+Fl3t93kgjkVY/T6f0GlgVUxzcqtbzYTKcyNe7qqeZSezG3VDt1pt9FFMlXcatySV1Xy47RyJhrWp4MblcJ5q5fE5koYtEoOWspeBzJRxaJQ11lLwO5ABkmWAAAAAADkNy9udMa/oWQ3yleyqhRUp62ncjJ4c96IuFRW/quRU8cZ6nXg6hOUHzRejOoTlB80XoyX7pwwXllQ78F6roJ4FX1fSaZ8b2p5Lyq5FX29PkQ6bQHDhQ2a6012v2paysqKaVssMVAi0rWuTuzIjlev91WKb0C1LiGRJaOX0LMs6+S0cjGNx+HrTOo6yW5WGrfp2ulcrpGRwpLTPcq9V7PLVaq/quRPHCrk4CLhg1E6o5ZdVWqOHP/UbTSPd/lyif6ipgIZ98FyqQhnXwWikZttZs1pXQk7LkztbreWoqJW1TU/JZTC9kxOjMplM9XYVU5sLg0kArWWTslzTerK9lkrHzSerAAODgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//Z" alt="NWU">
+    <span class="nav-badge">MVNO 2026</span>
+  </div>
+  <div class="nav-links">
+    <a href="#why">Why MVNOs</a>
+    <a href="#cvp">CVP</a>
+    <a href="#vas">VAS</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#evp">EVP</a>
+    <a href="#models">Models</a>
+    <a href="#methodology">Methodology</a>
+    <a href="mailto:support@dsg.co.za" class="nav-cta">Get in touch</a>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero" style="display:none">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-pill"><span></span>Workshop · 29 April 2026 · Potchefstroom</div>
+      <h1 class="hero-title">A campus-led MVNO <em>built around</em> the NWU student.</h1>
+      <p class="hero-desc">The NWU Connected Campus Platform — transforming everyday mobile usage into academic value, safety, and institutional loyalty across all NWU campuses.</p>
+      <div class="hero-cta-row">
+        <a href="#why" class="btn-primary">Explore the Proposal →</a>
+        <a href="#models" class="btn-ghost">View Pricing Models ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num"><em>75k+</em></div>
+          <div class="lbl">NWU students across 3 campuses</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num"><em>20–40%</em></div>
+          <div class="lbl">ARPU uplift via layered VAS</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num"><em>R39</em></div>
+          <div class="lbl">Data cost vs R160 retail value</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-sb">
+            <span class="time">9:41</span>
+            <span class="icons">▲▲ ■</span>
+          </div>
+          <div class="phone-body">
+            <div class="phone-welcome">Welcome back</div>
+            <div class="phone-brand">NWU CONNECTED</div>
+            <div class="phone-card">
+              <div class="phone-card-label">Mobile Balance</div>
+              <div class="phone-card-val">3.8 GB</div>
+              <div class="phone-card-sub">of 5 GB · NWU Student Connect</div>
+            </div>
+            <div class="phone-card">
+              <div class="phone-card-label">Zero-Rated Access</div>
+              <div class="phone-card-val" style="font-size:14px;color:#d4bbff">eFundi · Library · Portals</div>
+            </div>
+            <div class="phone-reward">
+              <div>
+                <div class="phone-reward-label">Study Reward</div>
+                <div class="phone-reward-val">+250MB earned</div>
+              </div>
+              <div style="font-size:18px">🎓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-dot"></span>NWU Student Connect SIM</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Zero-Rated eFundi Access</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Bitdefender Cybersecurity</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Campus Safety Alerts</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Behaviour-Based Data Rewards</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Staff Enablement Platform</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Alumni Lifelong Connectivity</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Smart Campus Data Insights</span>
+      <!-- duplicate for seamless loop -->
+      <span class="marquee-item"><span class="marquee-dot"></span>NWU Student Connect SIM</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Zero-Rated eFundi Access</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Bitdefender Cybersecurity</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Campus Safety Alerts</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Behaviour-Based Data Rewards</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Staff Enablement Platform</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Alumni Lifelong Connectivity</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Smart Campus Data Insights</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WHY MVNOs ═══════════ -->
+<section id="why" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Why MVNOs Win</div>
+    <h2 class="section-title fade-up stagger-1">MVNOs are no longer side projects.<br>They are strategic digital brands.</h2>
+    <p class="section-sub fade-up stagger-2">Success requires alignment across five dimensions — not just network access or a clever app.</p>
+    <div class="why-grid" style="margin-top:2.5rem">
+      <div class="why-card fade-up stagger-1">
+        <div class="why-card-icon">🎯</div>
+        <h3>CVP</h3>
+        <p>A value proposition that resonates deeply with your target audience</p>
+      </div>
+      <div class="why-card fade-up stagger-2">
+        <div class="why-card-icon">📣</div>
+        <h3>Marketing</h3>
+        <p>Scalable, data-driven customer acquisition and retention</p>
+      </div>
+      <div class="why-card fade-up stagger-3">
+        <div class="why-card-icon">💎</div>
+        <h3>Customer Value</h3>
+        <p>Maximise ARPU, engagement, and brand lifetime value</p>
+      </div>
+      <div class="why-card fade-up stagger-4">
+        <div class="why-card-icon">✨</div>
+        <h3>CX</h3>
+        <p>Frictionless, digital-first and emotionally intelligent experiences</p>
+      </div>
+      <div class="why-card fade-up stagger-5">
+        <div class="why-card-icon">🔧</div>
+        <h3>VAS</h3>
+        <p>Smart service bundling that unlocks loyalty and margin</p>
+      </div>
+    </div>
+    <div class="fallacy-box fade-up">
+      <div class="fallacy-no">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:.5rem">It's NOT</div>
+        <div class="fallacy-no-item"><span class="cross">✗</span> Just about technology</div>
+        <div class="fallacy-no-item"><span class="cross">✗</span> About copying the MNO</div>
+        <div class="fallacy-no-item"><span class="cross">✗</span> Enough to launch with low prices</div>
+      </div>
+      <div class="fallacy-yes">
+        <div style="color:#6ee7b7;font-size:22px;margin-bottom:.5rem">✓</div>
+        <h3>It's about building a business.</h3>
+        <p>One with its own brand logic, its own customer segments, and its own economics. MVNOs don't compete on price — <strong style="color:#d4bbff">they win on value.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE BAR -->
+<div class="quote-bar" id="quote-bar" style="display:none">
+  <blockquote>
+    "MVNOs don't compete on price. They win on value." — #DoingSomethingGreat
+    <cite>— MVNO Nation CX Study: Churn over 40% is common without great CX</cite>
+  </blockquote>
+</div>
+
+<!-- ═══════════ CVP ═══════════ -->
+<section id="cvp" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Customer Value Proposition</div>
+    <h2 class="section-title fade-up stagger-1">Great CVPs don't just sell<br>connectivity. They sell relevance.</h2>
+    <div class="cvp-layout">
+      <div>
+        <div class="cvp-dark fade-up">
+          <p>"AN MVNO IS A DIGITAL DELIVERY PLATFORM OFFERING UNPRECEDENTED VALUE, ANALYTICS & ENGAGEMENT"</p>
+        </div>
+        <p class="section-sub fade-up" style="margin-bottom:1.5rem">For NWU, the CVP must align with academic brand equity, how students learn and live, and South Africa's unmet digital access needs.</p>
+        <div class="platform-pillars fade-up">
+          <div class="pillar">
+            <div class="pillar-icon">📊</div>
+            <h4>Behavioural Data</h4>
+            <p>Passive collection of consumer behavioural data</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🔒</div>
+            <h4>Customer Entanglement</h4>
+            <p>Greater retention and reduced churn</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">💬</div>
+            <h4>1-to-1 Engagement</h4>
+            <p>Personalised marketing & relationship management</p>
+          </div>
+          <div class="pillar">
+            <div class="pillar-icon">🏆</div>
+            <h4>High Perceived Value</h4>
+            <p>R160 retail data value delivered at R39 cost</p>
+          </div>
+        </div>
+      </div>
+      <div class="fade-up stagger-2">
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:1.25rem;color:var(--text)">CVP Validation Framework</h3>
+        <table class="cvp-table">
+          <thead>
+            <tr><th>Dimension</th><th>Validation Question</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Offering</td><td>Is the offering differentiated and not just cheaper?</td></tr>
+            <tr><td>Value</td><td>Can we prove value through case studies or trials?</td></tr>
+            <tr><td>Alignment</td><td>Are we aligned with target segment expectations?</td></tr>
+            <tr><td>Goals</td><td>Does the CVP support long-term brand and margin goals?</td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:1.5rem">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:1rem;color:var(--text)">Competitive Advantages</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+            <span class="tag tag-purple">Non-comparative Proposition</span>
+            <span class="tag tag-purple">Better Customer Engagement</span>
+            <span class="tag tag-purple">Greater Customer Insight</span>
+            <span class="tag tag-purple">Greater Retention</span>
+            <span class="tag tag-purple">Improved Security</span>
+            <span class="tag tag-purple">Converged Content Offerings</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ VAS ═══════════ -->
+<section id="vas" style="display:none">
+  <div class="container">
+    <div class="vas-header">
+      <div>
+        <div class="section-label fade-up">Value-Added Services</div>
+        <h2 class="section-title fade-up stagger-1">VAS = Revenue + Differentiation + Retention</h2>
+        <p class="section-sub fade-up stagger-2">MVNOs win when they monetise beyond connectivity, address lifestyle needs, and build stickiness.</p>
+      </div>
+      <div class="vas-stat-big fade-up">
+        <div class="n">20–40%</div>
+        <div class="l">ARPU uplift via layered VAS</div>
+        <div class="n" style="margin-top:.5rem">3×</div>
+        <div class="l">higher LTV with bundled VAS</div>
+      </div>
+    </div>
+    <div class="vas-cards">
+      <div class="card fade-up stagger-1">
+        <div class="card-sub">🛡️ Cybersecurity</div>
+        <div class="card-title">Bitdefender + Safe Family</div>
+        <div class="card-text">Multi-access security suite with parental controls, VPN, identity protection. Exclusive African distribution via Digital Resilience.</div>
+      </div>
+      <div class="card fade-up stagger-2">
+        <div class="card-sub">🌐 Cyber Insurance</div>
+        <div class="card-title">eInsurer — Personal Cyber Coverage</div>
+        <div class="card-text">MEGA/GIGA/TERA tiers covering fund theft, ID fraud, cyberbullying, ransomware, and trauma costs for affected children.</div>
+      </div>
+      <div class="card fade-up stagger-3">
+        <div class="card-sub">🚗 Driver Safety</div>
+        <div class="card-title">Sentiance AI Telematics</div>
+        <div class="card-text">On-device AI driving insights, crash detection, lifestyle segmentation. Clients include Uber, ABSA, Samsung, State Farm.</div>
+      </div>
+      <div class="card fade-up stagger-4">
+        <div class="card-sub">💳 Mobile Finance</div>
+        <div class="card-title">Wallets, Loans & Payments (UPay)</div>
+        <div class="card-text">Mobile financial services enabling student commerce, campus payments, and financial access across all NWU campuses.</div>
+      </div>
+    </div>
+    <div class="vas-table-row fade-up">
+      <div class="vas-row-item"><div class="vas-row-icon">🎮</div><div><h4>Loyalty & Cashback</h4><p>Gamified rewards engine. Recharge streaks, points, levels.</p></div></div>
+      <div class="vas-row-item"><div class="vas-row-icon">❤️</div><div><h4>Health & Wellness</h4><p>Telehealth, fitness tracking, mental wellbeing resources.</p></div></div>
+      <div class="vas-row-item"><div class="vas-row-icon">🌍</div><div><h4>eSIM & Roaming</h4><p>Dual-SIM capability — local and global coverage from one profile.</p></div></div>
+      <div class="vas-row-item"><div class="vas-row-icon">📱</div><div><h4>Entertainment Bundles</h4><p>Streaming and gaming bundles for student lifestyle.</p></div></div>
+    </div>
+    <div>
+      <h3 class="fade-up" style="font-size:16px;font-weight:600;margin:2rem 0 1rem">Global VAS Benchmarks</h3>
+      <div class="global-grid">
+        <div class="global-card fade-up stagger-1"><h4>M-Pesa (Kenya)</h4><p>$900M+ revenue from nanoloans and mobile wallets</p></div>
+        <div class="global-card fade-up stagger-2"><h4>Jio (India)</h4><p>Bundles OTT to boost retention — Disney+, Netflix, JioCinema</p></div>
+        <div class="global-card fade-up stagger-3"><h4>DStv Internet</h4><p>Bundles satellite TV and FLTE connectivity</p></div>
+        <div class="global-card fade-up stagger-1"><h4>Telkomsel (Indonesia)</h4><p>Health platform bundled with SIMs</p></div>
+        <div class="global-card fade-up stagger-2"><h4>Verizon Cloud</h4><p>Monetises peace-of-mind with paid backups</p></div>
+        <div class="global-card fade-up stagger-3"><h4>Tesco Mobile (UK)</h4><p>Ties loyalty points to top-ups, drives retail synergy</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ USE CASES ═══════════ -->
+<section id="usecases" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">NWU Use Cases</div>
+    <h2 class="section-title fade-up stagger-1">A Unique Value Proposition<br>for North-West University</h2>
+    <p class="section-sub fade-up stagger-2 blockquote" style="border-left:3px solid var(--purple);padding-left:1.25rem;font-family:var(--font-serif);font-style:italic">"Your Campus. Your Connection. Your Academic Advantage."</p>
+    <div class="usecase-grid">
+      <div class="uc-card fade-up stagger-1">
+        <div class="uc-icon">📶</div>
+        <div class="uc-type">Student</div>
+        <h3>NWU Student Connect SIM</h3>
+        <p>Branded SIM/eSIM providing affordable, always-on access to academic resources with zero-rated LMS access.</p>
+        <ul class="uc-outcomes"><li>Improved access to learning</li><li>Reduced data cost barriers</li><li>Increased academic participation</li></ul>
+      </div>
+      <div class="uc-card fade-up stagger-2">
+        <div class="uc-icon">📚</div>
+        <div class="uc-type">Academic</div>
+        <h3>Digital Learning Platform</h3>
+        <p>MVNO embedded into NWU's digital learning ecosystem with zero-rated online lectures and data incentives.</p>
+        <ul class="uc-outcomes"><li>Increased online engagement</li><li>Improved academic performance</li><li>Reduced dropout risk</li></ul>
+      </div>
+      <div class="uc-card fade-up stagger-3">
+        <div class="uc-icon">🏫</div>
+        <div class="uc-type">Campus</div>
+        <h3>Multi-Campus Connectivity</h3>
+        <p>Unified connectivity across Potchefstroom, Mahikeng, and Vanderbijlpark campuses with consistent UX.</p>
+        <ul class="uc-outcomes"><li>Improved mobility and access</li><li>Standardised digital experience</li><li>Better operational efficiency</li></ul>
+      </div>
+      <div class="uc-card fade-up stagger-1">
+        <div class="uc-icon">🔔</div>
+        <div class="uc-type">Safety</div>
+        <h3>Campus Safety Layer</h3>
+        <p>Emergency alerts, panic button functionality, and real-time communication with campus security.</p>
+        <ul class="uc-outcomes"><li>Improved campus safety</li><li>Faster incident response</li><li>Peace of mind for parents</li></ul>
+      </div>
+      <div class="uc-card fade-up stagger-2">
+        <div class="uc-icon">🎓</div>
+        <div class="uc-type">Lifecycle</div>
+        <h3>Student Lifecycle Engine</h3>
+        <p>Drive engagement from prospective student to alumni with data rewards for milestones and participation.</p>
+        <ul class="uc-outcomes"><li>Stronger university connection</li><li>Increased retention</li><li>Enhanced student experience</li></ul>
+      </div>
+      <div class="uc-card fade-up stagger-3">
+        <div class="uc-icon">🔬</div>
+        <div class="uc-type">Research</div>
+        <h3>Research & Innovation Layer</h3>
+        <p>IoT connectivity for research devices, data collection, and integration into research platforms.</p>
+        <ul class="uc-outcomes"><li>Enhanced research capabilities</li><li>Improved data collection</li><li>Innovation enablement</li></ul>
+      </div>
+    </div>
+    <div style="margin-top:2.5rem" class="fade-up">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:1rem;color:var(--text)">Example MVNO Packages</h3>
+      <div class="pkg-table-wrap">
+        <table class="pkg-table">
+          <thead><tr><th>Package</th><th>Target</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>NWU Student Connect</td><td>Students</td><td>Learning Access + Data</td></tr>
+            <tr><td>NWU Staff Connect</td><td>Staff</td><td>Productivity + Communication</td></tr>
+            <tr><td>NWU Campus Connect</td><td>All Users</td><td>Unified Connectivity</td></tr>
+            <tr><td>NWU Research Connect</td><td>Researchers</td><td>IoT + Data</td></tr>
+            <tr><td>NWU Alumni Connect</td><td>Graduates</td><td>Lifelong Enablement</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ EVP ═══════════ -->
+<section id="evp" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Employee Value Proposition</div>
+    <h2 class="section-title fade-up stagger-1">An Employee Engagement Platform<br>with connectivity embedded.</h2>
+    <p class="section-sub fade-up stagger-2">Not just an MVNO — a unified platform that turns mobile data into a reward, a benefit, and a loyalty currency for NWU staff.</p>
+    <div class="evp-grid">
+      <div class="evp-card fade-up stagger-1">
+        <div class="evp-num">01</div>
+        <h3>Reduce Cost of Living</h3>
+        <div class="evp-tagline">"We reduce your employees' cost of living."</div>
+        <ul><li>Value mobile data & voice</li><li>Zero-rated access to NWU platforms</li><li>Data rewards for behaviour</li><li>Family SIM extensions</li><li>Device finance options</li><li>Built-in cybersecurity</li></ul>
+      </div>
+      <div class="evp-card fade-up stagger-2">
+        <div class="evp-num">02</div>
+        <h3>Rewarding Right Behaviour</h3>
+        <div class="evp-tagline">"Good behaviour earns real value."</div>
+        <ul><li>Performance target rewards</li><li>Training completion incentives</li><li>Wellness participation data</li><li>Financial education rewards</li><li>Internal referral bonuses</li><li>App engagement incentives</li></ul>
+      </div>
+      <div class="evp-card fade-up stagger-3">
+        <div class="evp-num">03</div>
+        <h3>Unified Staff Super App</h3>
+        <div class="evp-tagline">"Everything in one place."</div>
+        <ul><li>HR self-service portal</li><li>Payslip access</li><li>Emergency notifications</li><li>Zero-rated intranet</li><li>Gamification leaderboards</li><li>Learning modules</li></ul>
+      </div>
+      <div class="evp-card fade-up stagger-1">
+        <div class="evp-num">04</div>
+        <h3>Safer Workforce</h3>
+        <div class="evp-tagline">"Through Bitdefender."</div>
+        <ul><li>Built-in device protection</li><li>Identity monitoring</li><li>Phishing awareness tools</li><li>Cyber education modules</li><li>Secure authentication</li><li>Family cybersecurity bundles</li></ul>
+      </div>
+      <div class="evp-card fade-up stagger-2">
+        <div class="evp-num">05</div>
+        <h3>Workforce Intelligence</h3>
+        <div class="evp-tagline">"From guessing to measuring."</div>
+        <ul><li>Behavioural insights (POPIA compliant)</li><li>Engagement heatmaps</li><li>Campaign ROI tracking</li><li>Churn prediction</li><li>Location-aware alerts</li></ul>
+      </div>
+      <div class="evp-card fade-up stagger-3" style="background:rgba(105,41,196,0.15);border-color:rgba(105,41,196,0.35)">
+        <div class="evp-num" style="color:var(--purple-mid)">★</div>
+        <h3>Mobile Data Becomes</h3>
+        <div class="evp-tagline">High perceived value, low real cost</div>
+        <ul>
+          <li style="color:var(--purple-mid)">A reward</li>
+          <li style="color:var(--purple-mid)">A benefit</li>
+          <li style="color:var(--purple-mid)">A loyalty currency</li>
+        </ul>
+        <div style="margin-top:1rem;font-size:11.5px;color:rgba(255,255,255,0.4);line-height:1.6">Powerful in South Africa where mobile data is a significant monthly expense for staff.</div>
+      </div>
+    </div>
+    <div class="evp-employer fade-up">
+      <div class="evp-employer-card">
+        <h4>For HR</h4>
+        <ul><li>Improved engagement</li><li>Measurable participation</li><li>Lower turnover</li><li>Digital workforce enablement</li></ul>
+      </div>
+      <div class="evp-employer-card">
+        <h4>For CFO</h4>
+        <ul><li>Low CapEx model</li><li>Predictable Opex</li><li>Revenue share potential</li><li>Lower cost-to-serve via digital</li></ul>
+      </div>
+      <div class="evp-employer-card">
+        <h4>For Vice-Chancellor</h4>
+        <ul><li>Defensive digital positioning</li><li>Data ownership</li><li>Workforce loyalty moat</li><li>Platform expansion capability</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CX ═══════════ -->
+<section id="cx" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Customer Experience</div>
+    <h2 class="section-title fade-up stagger-1">CX — Why This Matters</h2>
+    <p class="section-sub fade-up stagger-2">Today's student expects relevance and a ubiquitous frictionless experience across multiple channels.</p>
+    <div class="cx-five">
+      <div class="cx-step fade-up stagger-1"><div class="cx-step-num">1</div><h4>Single Customer View</h4><p>One unified profile across all touchpoints</p></div>
+      <div class="cx-step fade-up stagger-2"><div class="cx-step-num">2</div><h4>Integrated Channels</h4><p>Stage 3 & 4 MVNO CX maturity</p></div>
+      <div class="cx-step fade-up stagger-3"><div class="cx-step-num">3</div><h4>BOT & Self Service</h4><p>&gt;70% interaction support automated</p></div>
+      <div class="cx-step fade-up stagger-4"><div class="cx-step-num">4</div><h4>Hyper Personalised</h4><p>Data-driven segment experiences</p></div>
+      <div class="cx-step fade-up stagger-5"><div class="cx-step-num">5</div><h4>On-Demand CX</h4><p>24/7 digital-first support</p></div>
+    </div>
+    <div class="cx-channels fade-up">
+      <h3>Omni-Channel Support</h3>
+      <div class="channel-tags">
+        <span class="tag tag-purple">📞 Inbound & Outbound Voice</span>
+        <span class="tag">📧 Email & Web Forms</span>
+        <span class="tag tag-purple">💬 WhatsApp</span>
+        <span class="tag">Facebook Messenger</span>
+        <span class="tag tag-purple">📱 Live Chat</span>
+        <span class="tag">USSD</span>
+        <span class="tag tag-purple">SMS</span>
+        <span class="tag">BOT</span>
+        <span class="tag tag-purple">Instagram DMs</span>
+        <span class="tag">Self-Care App</span>
+        <span class="tag tag-purple">AI Agent</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ METHODOLOGY ═══════════ -->
+<section id="methodology" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Project Approach</div>
+    <h2 class="section-title fade-up stagger-1">What to Expect from<br>the MVNE Engagement</h2>
+    <div class="timeline-h fade-up">
+      <div class="phase"><div class="phase-dot"></div><div class="phase-label">M1–M3</div><div class="phase-name">Commercial Viability Phase</div></div>
+      <div class="phase"><div class="phase-dot"></div><div class="phase-gate">Board Approval</div><div class="phase-label">M3</div><div class="phase-name">Decision Gate</div></div>
+      <div class="phase"><div class="phase-dot"></div><div class="phase-label">M4–M6</div><div class="phase-name">Implementation Scoping + Integration & Testing</div></div>
+      <div class="phase"><div class="phase-dot"></div><div class="phase-gate">Exco Approval</div><div class="phase-label">M7</div><div class="phase-name">Decision Gate</div></div>
+      <div class="phase"><div class="phase-dot"></div><div class="phase-label">M8–M9</div><div class="phase-name">Soft Launch</div></div>
+      <div class="phase"><div class="phase-dot"></div><div class="phase-gate">Board Approval</div><div class="phase-label">M10</div><div class="phase-name">Full Commercial Launch ⭐</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--text-faint);margin-top:1rem;font-style:italic" class="fade-up">These are indicative timelines and may well be shortened.</p>
+    <div class="deliverables-grid fade-up">
+      <div class="del-card"><div class="del-code">MVP</div><h4>Customer Value Proposition</h4><p>Packages, deals and services forming a Minimum Viable Launch Proposition</p></div>
+      <div class="del-card"><div class="del-code">OM</div><h4>Operating Model</h4><p>High-level Technical Architecture & relational diagram between all Parties</p></div>
+      <div class="del-card"><div class="del-code">GTMP</div><h4>Go-to-Market Plan</h4><p>Sales, Distribution, Customer Care and Subscriber Life Cycle Management</p></div>
+      <div class="del-card"><div class="del-code">ICX</div><h4>Integrated CX</h4><p>Customer Journeys and high-level business processes</p></div>
+      <div class="del-card"><div class="del-code">BM</div><h4>60-Month Business Plan</h4><p>Granular financial model with sensitivity analysis and commercial viability</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MODELS ═══════════ -->
+<section id="models" style="display:none">
+  <div class="container">
+    <div class="section-label fade-up">Engagement Models</div>
+    <h2 class="section-title fade-up stagger-1">Three Paths to Launch</h2>
+    <p class="section-sub fade-up stagger-2">Choose the model that fits NWU's strategic ambition, timeline, and investment appetite.</p>
+    <div class="models-table-wrap fade-up">
+      <table class="models-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Full MVNO — Brand New</th>
+            <th>✦ Digital Mobile Partnership</th>
+            <th>Technology Only</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Estimated Build Cost</td><td>R2,700,000</td><td>R250,000</td><td>Solution Dependent</td></tr>
+          <tr><td>Build Timeline</td><td>6 Months</td><td>2 Months</td><td>6 Months</td></tr>
+          <tr><td>Monthly Minimum Cost</td><td>R400,000</td><td>R75,000</td><td>R200,000–R400,000</td></tr>
+          <tr><td>Per Subscriber / Month</td><td>R12</td><td>R7.50</td><td>R4.50–R12</td></tr>
+          <tr><td>Network Name</td><td>Your Choice</td><td>Digital Mobile / NWU</td><td>Solution Dependent</td></tr>
+          <tr><td>Branded SIM Card</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="opt">Optional</td></tr>
+          <tr><td>OSS / BSS / PCRF / OCS</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="opt">Optional</td></tr>
+          <tr><td>CVM (Xanite)</td><td class="opt">Optional</td><td class="opt">Optional</td><td class="opt">Optional</td></tr>
+          <tr><td>Marketing as a Service</td><td class="opt">Optional</td><td class="opt">Optional</td><td class="opt">Optional</td></tr>
+          <tr><td>Finance as a Service</td><td class="opt">Optional</td><td class="opt">Optional</td><td class="opt">Optional</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--text-faint);margin-top:.75rem;font-style:italic" class="fade-up">Charged only one of Monthly Minimum or Per Subscriber cost — whichever is higher.</p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div id="final-cta" style="display:none;background:var(--navy);padding:4rem 0;text-align:center">
+  <div class="container">
+    <p class="fade-up" style="color:var(--purple-mid);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem">The Takeaway</p>
+    <h2 class="fade-up stagger-1" style="font-family:var(--font-serif);font-size:2.8rem;color:#fff;margin-bottom:1rem">MVNOs don't compete on price.<br><em style="color:var(--purple-mid)">They win on value.</em></h2>
+    <p class="fade-up stagger-2" style="color:rgba(255,255,255,0.45);max-width:560px;margin:0 auto 2rem;font-size:1rem;line-height:1.7">This is not telecom — it's a connected campus platform enabling access, safety, and digital learning at scale for North-West University.</p>
+    <a href="mailto:support@dsg.co.za" class="btn-primary fade-up stagger-3" style="display:inline-flex">Get in touch with DSG →</a>
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer id="main-footer" style="display:none">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="data:image/jpeg;base64,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" alt="NWU">
+    </div>
+    <div class="footer-meta">
+      <p>NWU Connected Campus · MVNO Workshop 2026<br>
+        Presented by <a href="https://dsg.co.za">DSG</a> · MVNE · CXG · broadbrand<br>
+        <a href="mailto:support@dsg.co.za">support@dsg.co.za</a> · +27 11 759 7000
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── LOCK SCREEN AUTH ──
+function checkLock() {
+  const u = document.getElementById('lock-user').value.trim();
+  const p = document.getElementById('lock-pass').value.trim();
+  const err = document.getElementById('lock-error');
+  // NWU-specific credentials
+  if (u === 'nwu' && p === 'NWU@Campus2026') {
+    document.getElementById('lockscreen').style.display = 'none';
+    ['main-nav','hero','why','quote-bar','cvp','vas','usecases','evp','cx','methodology','models','final-cta','main-footer'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = '';
+    });
+    // trigger fade-ins
+    setTimeout(initFadeUps, 100);
+  } else {
+    err.style.display = 'block';
+    err.textContent = 'Incorrect credentials. Please try again.';
+  }
+}
+
+document.getElementById('lock-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkLock();
+});
+document.getElementById('lock-user').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('lock-pass').focus();
+});
+
+// ── SCROLL ANIMATIONS ──
+function initFadeUps() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+}
+</script>
+</body>
+</html>
